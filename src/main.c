@@ -111,14 +111,14 @@ int main(int argc, char **argv)
   markCells(detected_cells, detection_count, input_image, output_image);
   // Save image to file
   write_bitmap(output_image, argv[2]);
-#if DEBUGGING
-  printf("Done!\n");
-#endif
 #if TESTING
   end = clock();
 
   cpu_time_used = end - start;
-  printf("%f\n", cpu_time_used * 1000.0 / CLOCKS_PER_SEC);
+  printf("%f", cpu_time_used * 1000.0 / CLOCKS_PER_SEC);
+#endif
+#if DEBUGGING
+  printf("Done!\n");
 #endif
   return EXIT_SUCCESS;
 }
