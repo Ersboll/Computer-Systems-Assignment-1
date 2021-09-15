@@ -20,11 +20,19 @@ int main(int argc, char **argv) {
   unsigned char(*out_image_buffer)[BMP_HEIGTH] = binary_image_1;
   unsigned char(*temp_buffer)[BMP_HEIGTH] = NULL;
 #if DEBUGGING
+#ifdef __linux__
   char *file_names[20] = {
-      "out/1.bmp",  "out/2.bmp",  "out/3.bmp",  "out/4.bmp",  "out/5.bmp",
-      "out/6.bmp",  "out/7.bmp",  "out/8.bmp",  "out/9.bmp",  "out/10.bmp",
+      "out/01.bmp", "out/02.bmp", "out/03.bmp", "out/04.bmp", "out/05.bmp",
+      "out/06.bmp", "out/07.bmp", "out/08.bmp", "out/09.bmp", "out/10.bmp",
       "out/11.bmp", "out/12.bmp", "out/13.bmp", "out/14.bmp", "out/15.bmp",
       "out/16.bmp", "out/17.bmp", "out/18.bmp", "out/20.bmp"};
+#else
+  char *file_names[20] = {
+      "out\\01.bmp", "out\\02.bmp", "out\\03.bmp", "out\\04.bmp", "out\\05.bmp",
+      "out\\06.bmp", "out\\07.bmp", "out\\08.bmp", "out\\09.bmp", "out\\10.bmp",
+      "out\\11.bmp", "out\\12.bmp", "out\\13.bmp", "out\\14.bmp", "out\\15.bmp",
+      "out\\16.bmp", "out\\17.bmp", "out\\18.bmp", "out\\20.bmp"};
+#endif
 #endif
   // argc counts how may arguments are passed
   // argv[0] is a string with the name of the program
@@ -82,7 +90,7 @@ int main(int argc, char **argv) {
       detected_cells[detection_count + j][0] = buffer_list_cells_buffer[j][0];
       detected_cells[detection_count + j][1] = buffer_list_cells_buffer[j][1];
     }
-    memset(buffer_list_cells_buffer, 0, sizeof(buffer_list_cells_buffer));
+    memset(buffer_list_cells_buffer, 0, MAX_CELL_COUNT * 2);
     detection_count += n;
     temp_buffer = in_image_buffer;
     in_image_buffer = out_image_buffer;
