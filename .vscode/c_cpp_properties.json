@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "cStandard": "gnu99",
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

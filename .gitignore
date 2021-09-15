@@ -2,6 +2,7 @@
 samples/
 results_example/
 *.bmp
+final_program
 
 # Prerequisites
 *.d
