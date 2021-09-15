@@ -2,7 +2,6 @@
 #define IMAGE_PROCESSING_H
 
 #include "cbmp.h"
-#include <stdio.h>
 #define THRESHOLD 90
 #define DETECTION_FRAME 14
 

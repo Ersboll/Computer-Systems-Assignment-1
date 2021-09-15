@@ -102,8 +102,6 @@ void markCells(
     x = detected_cells[i][0];
     y = detected_cells[i][1];
     _getXandYmaxmin(x, y, &xmin, &xmax, &ymin, &ymax);
-    // printf("%d,%d\n", x, y);
-    // printf("xmin: %d\n", xmax);
 
     for (short int a = xmin; a <= xmax; a++) {
       output_image[x + a][y][0] = 255;
@@ -116,7 +114,6 @@ void markCells(
       output_image[x][y + a][1] = 0;
       output_image[x][y + a][2] = 0;
     }
-    // output_image[x][y][0] = 255;
   }
 }
 
