@@ -2,6 +2,11 @@
 
 // Main function
 int main(int argc, char **argv) {
+#if TESTING
+  clock_t start, end;
+  double cpu_time_used;
+  start = clock();
+#endif
   // Declaring the array to store the image (unsigned char = unsigned 8 bit)
   unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
   unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH];
@@ -93,6 +98,12 @@ int main(int argc, char **argv) {
   write_bitmap(output_image, argv[2]);
 #if DEBUGGING
   printf("Done!\n");
+#endif
+#if TESTING
+  end = clock();
+
+  cpu_time_used = end - start;
+  printf("%f\n", cpu_time_used * 1000.0 / CLOCKS_PER_SEC);
 #endif
   return EXIT_SUCCESS;
 }
