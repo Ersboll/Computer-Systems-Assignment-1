@@ -1,24 +1,28 @@
 #include "main.h"
 
 // Main function
-int main(int argc, char **argv) {
+unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
+unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH];
+unsigned char binary_image_1[BMP_WIDTH][BMP_HEIGTH];
+unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
+unsigned short int detected_cells[MAX_CELL_COUNT][2];
+unsigned short int buffer_list_cells[MAX_CELL_COUNT][2];
+
+unsigned short int (*buffer_list_cells_buffer)[2] = buffer_list_cells;
+unsigned char (*in_image_buffer)[BMP_HEIGTH] = binary_image_0;
+unsigned char (*out_image_buffer)[BMP_HEIGTH] = binary_image_1;
+unsigned char (*temp_buffer)[BMP_HEIGTH] = NULL;
+
+int main(int argc, char **argv)
+{
+  printf("We starting!");
+
 #if TESTING
   clock_t start, end;
   double cpu_time_used;
   start = clock();
 #endif
   // Declaring the array to store the image (unsigned char = unsigned 8 bit)
-  unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
-  unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH];
-  unsigned char binary_image_1[BMP_WIDTH][BMP_HEIGTH];
-  unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
-  unsigned short int detected_cells[MAX_CELL_COUNT][2];
-  unsigned short int buffer_list_cells[MAX_CELL_COUNT][2];
-
-  unsigned short int(*buffer_list_cells_buffer)[2] = buffer_list_cells;
-  unsigned char(*in_image_buffer)[BMP_HEIGTH] = binary_image_0;
-  unsigned char(*out_image_buffer)[BMP_HEIGTH] = binary_image_1;
-  unsigned char(*temp_buffer)[BMP_HEIGTH] = NULL;
 #if DEBUGGING
 #ifdef __linux__
   char *file_names[20] = {
@@ -40,7 +44,8 @@ int main(int argc, char **argv) {
   // argv[2] is the second command line argument (output image)
 
   // Checking that 2 arguments are passed
-  if (argc != 3) {
+  if (argc != 3)
+  {
     fprintf(stderr, "Usage: %s <output file path> <output file path>\n",
             argv[0]);
     exit(1);
@@ -71,7 +76,8 @@ int main(int argc, char **argv) {
 #endif
   unsigned int detection_count = 0;
   unsigned int n = 0;
-  while (erosion(in_image_buffer, out_image_buffer)) {
+  while (erosion(in_image_buffer, out_image_buffer))
+  {
 #if DEBUGGING
     printf("erosion: %d\n", ++i);
 #endif
@@ -86,7 +92,8 @@ int main(int argc, char **argv) {
 
     n = detectCells(in_image_buffer, out_image_buffer,
                     buffer_list_cells_buffer);
-    for (unsigned int j = 0; j < n; j++) {
+    for (unsigned int j = 0; j < n; j++)
+    {
       detected_cells[detection_count + j][0] = buffer_list_cells_buffer[j][0];
       detected_cells[detection_count + j][1] = buffer_list_cells_buffer[j][1];
     }
