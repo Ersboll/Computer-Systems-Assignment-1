@@ -1,5 +1,7 @@
 # Project specific
 final_program
+out/
+out.bmp
 
 # Prerequisites
 *.d
