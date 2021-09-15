@@ -1,7 +1,4 @@
 # Project specific
-samples/
-results_example/
-*.bmp
 final_program
 
 # Prerequisites
