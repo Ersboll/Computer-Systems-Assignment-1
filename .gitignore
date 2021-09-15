@@ -1,3 +1,8 @@
+# Project specific
+samples/
+results_example/
+*.bmp
+
 # Prerequisites
 *.d
 
