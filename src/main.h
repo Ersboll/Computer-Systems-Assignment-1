@@ -10,7 +10,7 @@
 
 #define MAX_CELL_COUNT 500
 
-#define DEBUGGING 0
+#define DEBUGGING 1
 #define TESTING 0
 
 #endif
