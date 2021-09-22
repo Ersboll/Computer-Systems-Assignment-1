@@ -13,6 +13,14 @@ unsigned char (*in_image_buffer)[BMP_HEIGTH] = binary_image_0;
 unsigned char (*out_image_buffer)[BMP_HEIGTH] = binary_image_1;
 unsigned char (*temp_buffer)[BMP_HEIGTH] = NULL;
 
+//Swaps pointers
+void pointerSwap(unsigned char (*pointer1)[], unsigned char (*pointer2)[]) {
+  temp_buffer = pointer1;
+  pointer1 = pointer2;
+  pointer2 = temp_buffer;
+}
+
+
 int main(int argc, char **argv)
 {
   printf("We starting!");
@@ -61,15 +69,11 @@ int main(int argc, char **argv)
 #endif
   rgb2gray(input_image, out_image_buffer);
 
-  temp_buffer = in_image_buffer;
-  in_image_buffer = out_image_buffer;
-  out_image_buffer = temp_buffer;
+  pointerSwap(in_image_buffer, out_image_buffer);
 
   binaryThreshold(in_image_buffer, out_image_buffer);
 
-  temp_buffer = in_image_buffer;
-  in_image_buffer = out_image_buffer;
-  out_image_buffer = temp_buffer;
+  pointerSwap(in_image_buffer, out_image_buffer);
 
 #if DEBUGGING
   int i = -1;
@@ -81,9 +85,7 @@ int main(int argc, char **argv)
 #if DEBUGGING
     printf("erosion: %d\n", ++i);
 #endif
-    temp_buffer = in_image_buffer;
-    in_image_buffer = out_image_buffer;
-    out_image_buffer = temp_buffer;
+    pointerSwap(in_image_buffer, out_image_buffer);
 
 #if DEBUGGING
     gray2rgb(in_image_buffer, output_image);
@@ -99,9 +101,7 @@ int main(int argc, char **argv)
     }
     memset(buffer_list_cells_buffer, 0, MAX_CELL_COUNT * 2);
     detection_count += n;
-    temp_buffer = in_image_buffer;
-    in_image_buffer = out_image_buffer;
-    out_image_buffer = temp_buffer;
+    pointerSwap(in_image_buffer, out_image_buffer);
   }
 #if DEBUGGING
   printf("Finished detection:%u\n", detection_count);
