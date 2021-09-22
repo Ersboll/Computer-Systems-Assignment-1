@@ -88,7 +88,6 @@ void _whipeCell(short int x, short int y,
   ymin++;
   xmax--;
   ymax--;
-
   for (short int i = xmin; i <= xmax; i++) {
     for (short int j = ymin; j <= ymax; j++) {
       out_image_buffer[x + i][y + j] = 0;
@@ -98,19 +97,19 @@ void _whipeCell(short int x, short int y,
 
 void _getXandYmaxmin(short int x, short int y, short int *xmin, short int *xmax,
                      short int *ymin, short int *ymax) {
-  *xmin = -5;
-  *xmax = 6;
-  *ymin = -5;
-  *ymax = 6;
+  *xmin = -6;
+  *xmax = 7;
+  *ymin = -6;
+  *ymax = 7;
 
-  if (x < 5) {
+  if (x < 6) {
     *xmin = -x;
   }
   if (x > BMP_WIDTH - 1 - *xmax) {
     *xmax = BMP_WIDTH - 1 - x;
   }
 
-  if (y < 5) {
+  if (y < 6) {
     *ymin = -y;
   }
   if (y > BMP_HEIGTH - 1 - *ymax) {
