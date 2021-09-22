@@ -1,7 +1,7 @@
 #include "rgb_gray_conversion.h"
 
 void rgb2gray(unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS],
-              unsigned char (*out_image_buffer)[BMP_HEIGTH]) {
+              unsigned char out_image_buffer[BMP_WIDTH][BMP_HEIGTH]) {
   for (int i = 0; i < BMP_WIDTH; i++) {
     for (int j = 0; j < BMP_HEIGTH; j++) {
       out_image_buffer[i][j] =

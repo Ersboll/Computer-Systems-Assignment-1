@@ -67,7 +67,10 @@ int main(int argc, char **argv)
 #if DEBUGGING
   printf("RGB 2 gray\n");
 #endif
-  rgb2gray(input_image, out_image_buffer);
+  unsigned char rgb2g[BMP_WIDTH][BMP_HEIGTH];
+  unsigned char (*rgb2g_buffer)[BMP_HEIGTH]=rgb2g;
+  rgb2gray(input_image, rgb2g_buffer);
+  out_image_buffer=rgb2g_buffer;
 
   pointerSwap();
 
