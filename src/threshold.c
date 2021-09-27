@@ -22,17 +22,11 @@ void binary_threshold(unsigned char (*in_image_buffer)[BMP_HEIGTH],
   }
 }
 
-#if THRESHOLDING_METHOD == OTSU
+#if THRESHOLDING_METHOD == OTSU || THRESHOLDING_METHOD == MAXIMUM_DEVIATION
 
-// Otsu's method
-// Input argument is a 256x256 grayscale image
-// output is the threshold in range [0;255]
-unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
-
-  unsigned short histogram[HISTOGRAM_SIZE];
-  unsigned char threshold;
-
-  memset(histogram, 0, sizeof(histogram));
+void _compute_histogram(unsigned short *histogram,
+                        unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
+  memset(histogram, 0, HISTOGRAM_SIZE);
 
 #if DEBUGGING
   printf("creating histogram\n");
@@ -42,52 +36,57 @@ unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
       histogram[in_image_buffer[i][j]]++;
     }
   }
+}
 
-#if DEBUGGING
-  printf("calculating sum1\n");
-#endif
+#endif // THRESHOLDING_METHOD == OTSU || THRESHOLDING_METHOD ==
+       // MAXIMUM_DEVIATION
 
-  double sum1 = 0;
+#if THRESHOLDING_METHOD == OTSU
+// Otsu's method
+// Input argument is a 256x256 grayscale image
+// output is the threshold in range [0;255]
+
+unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
+  unsigned short histogram[HISTOGRAM_SIZE];
+  _compute_histogram(histogram, in_image_buffer);
+  unsigned char threshold;
+
+  float sum = 0.0;
+  float sum_b = 0.0;
+  unsigned short q1 = 0;
+  unsigned short q2 = 0;
+  float var_max = 0;
+  float m1, m2, var_between;
+
+  // Auxilary value for computing m2
   for (unsigned short i = 0; i < HISTOGRAM_SIZE; i++) {
-    sum1 += i * histogram[i];
+    sum += i * (int)histogram[i];
   }
 
-  double sumB = 0.0;
-  long wB = 0;
-  long wF = 0;
-
-#if DEBUGGING
-  printf("otsu\n");
-#endif
-  double mF, mB, val, maximum;
   for (unsigned short i = 0; i < HISTOGRAM_SIZE; i++) {
-    // Background weight
-    wB += histogram[i];
-    if (wB == 0)
+    q1 += histogram[i];
+    if (q1 == 0)
       continue;
+    q2 = BMP_WIDTH * BMP_HEIGTH - q1;
 
-    // Forground weight
-    wF = BMP_WIDTH * BMP_HEIGTH - wB;
-    if (wF == 0)
+    if (q2 == 0)
       break;
 
-    sumB += i * histogram[i];
+    // update m1 and m2
+    sum_b += (float)(i * (int)histogram[i]);
+    m1 = sum_b / q1;
+    m2 = (sum - sum_b) / q2;
 
-    if (wB > 0 && wF > 0) {
-      mF = (sum1 - sumB) / wF;
-      mB = sumB / wB;
-      val = wB * wF * (mB - mF) * (mB - mF);
+    var_between = (float)q1 * (float)q2 * (m1 - m2) * (m1 - m2);
 
-      if (val > maximum) {
-        maximum = val;
-        threshold = i;
-      }
+    if (var_between > var_max) {
+      var_max = var_between;
+      threshold = i;
     }
   }
 
   return threshold;
 }
-
 #endif // THRESHOLDING_METHOD == OTSU
 
 #if THRESHOLDING_METHOD == MAXIMUM_DEVIATION
@@ -96,16 +95,7 @@ unsigned char _maximum_deviation(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
   unsigned short histogram[HISTOGRAM_SIZE];
   unsigned char threshold;
 
-  memset(histogram, 0, sizeof(histogram));
-
-#if DEBUGGING
-  printf("creating histogram\n");
-#endif
-  for (unsigned short i = 0; i < BMP_WIDTH; i++) {
-    for (unsigned short j = 0; j < BMP_HEIGTH; j++) {
-      histogram[in_image_buffer[i][j]]++;
-    }
-  }
+  _compute_histogram(histogram, in_image_buffer);
 
   unsigned char peak_location = 0;
   unsigned long peak_value = 0;
