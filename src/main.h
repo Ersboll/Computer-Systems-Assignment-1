@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "compression.h"
 
 #define MAX_CELL_COUNT 500
 
