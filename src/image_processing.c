@@ -1,8 +1,9 @@
 #include "image_processing.h"
 #include "compression.h"
+#include <stdio.h>
 
-int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH/8 + 1],
-            unsigned char (*out_image_buffer)[BMP_HEIGTH/8 + 1])
+int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1],
+            unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1])
 {
   unsigned int erosionCount = 0;
 
@@ -41,7 +42,7 @@ int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH/8 + 1],
 
 // Returns 1 if white pixel is detected in the exclusion frame else 0
 int _exclusion(short int x, short int y,
-               unsigned char (*in_image_buffer)[BMP_HEIGTH/8+1])
+               unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1])
 {
   int exclude = 0;
   short int xmin, xmax, ymin, ymax;
@@ -53,7 +54,7 @@ int _exclusion(short int x, short int y,
       break;
 
     exclude = exclude || in_image_buffer[x + i][y + ymax] ||
-              getValue(in_image_buffer, x+i, y+ymin);
+              getValue(in_image_buffer, x + i, y + ymin);
   }
 
   for (int i = ymin; i <= ymax; i++)
@@ -61,8 +62,8 @@ int _exclusion(short int x, short int y,
     if (exclude)
       break;
 
-    exclude = exclude || getValue(in_image_buffer, x+xmax, y+i) ||
-              getValue(in_image_buffer, x+xmin, y+1);
+    exclude = exclude || getValue(in_image_buffer, x + xmax, y + i) ||
+              getValue(in_image_buffer, x + xmin, y + 1);
   }
 
   return exclude;
@@ -70,7 +71,7 @@ int _exclusion(short int x, short int y,
 
 // Returns 1 if a white pixel is found in the detection area else 0
 int _detection(short int x, short int y,
-               unsigned char (*in_image_buffer)[BMP_HEIGTH/8+1])
+               unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1])
 {
   int detected = 0;
 
@@ -86,7 +87,11 @@ int _detection(short int x, short int y,
   {
     for (int j = ymin; j <= ymax; j++)
     {
-      if (getValue(in_image_buffer,i + x,j + y))
+      if (x > 296 && y >= 627)
+      {
+        printf("val is %d at %d, %d \n", getValue(in_image_buffer, i + x, j + y), i + x, j + y);
+      }
+      if (getValue(in_image_buffer, i + x, j + y))
       {
         detected = 1;
         break;
@@ -95,12 +100,15 @@ int _detection(short int x, short int y,
     if (detected)
       break;
   }
-
+  if (x > 296 && y >= 627)
+  {
+    printf("returning detetcted %d \n",detected);
+  }
   return detected;
 }
 
 void _whipeCell(short int x, short int y,
-                unsigned char (*out_image_buffer)[BMP_HEIGTH/8 + 1])
+                unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1])
 {
   short int xmin, xmax, ymin, ymax;
   _getXandYmaxmin(x, y, &xmin, &xmax, &ymin, &ymax);
@@ -112,7 +120,7 @@ void _whipeCell(short int x, short int y,
   {
     for (short int j = ymin; j <= ymax; j++)
     {
-      setValue(out_image_buffer,x+i, y+j,0);
+      setValue(out_image_buffer, x + i, y + j, 0);
     }
   }
 }
