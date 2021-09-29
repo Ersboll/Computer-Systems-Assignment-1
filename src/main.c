@@ -73,7 +73,7 @@ int main(int argc, char **argv)
   unsigned char(*big_buffer2)[BMP_HEIGTH] = rgb2g;
   rgb2gray(input_image, big_buffer1);
 
-  binaryThreshold(big_buffer1, big_buffer2);
+  binary_threshold(big_buffer1, big_buffer2);
 
 #if DEBUGGING
   printf("Compressing\n");
