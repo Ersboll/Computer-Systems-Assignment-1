@@ -23,7 +23,9 @@ void pointerSwap(unsigned char (*pointer1)[], unsigned char (*pointer2)[]) {
 
 int main(int argc, char **argv)
 {
+#if DEBUGGING
   printf("We starting!");
+#endif
 
 #if TESTING
   clock_t start, end;
