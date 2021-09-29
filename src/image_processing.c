@@ -100,7 +100,7 @@ int _detection(short int x, short int y,
 }
 
 void _whipeCell(short int x, short int y,
-                unsigned char (*out_image_buffer)[BMP_HEIGTH/8+1])
+                unsigned char (*out_image_buffer)[BMP_HEIGTH/8 + 1])
 {
   short int xmin, xmax, ymin, ymax;
   _getXandYmaxmin(x, y, &xmin, &xmax, &ymin, &ymax);
