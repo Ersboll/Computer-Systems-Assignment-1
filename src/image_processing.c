@@ -53,7 +53,7 @@ int _exclusion(short int x, short int y,
     if (exclude)
       break;
 
-    exclude = exclude || in_image_buffer[x + i][y + ymax] ||
+    exclude = exclude || getValue(in_image_buffer,x + i, y + ymax) ||
               getValue(in_image_buffer, x + i, y + ymin);
   }
 
@@ -87,10 +87,6 @@ int _detection(short int x, short int y,
   {
     for (int j = ymin; j <= ymax; j++)
     {
-      if (x > 296 && y >= 627)
-      {
-        printf("val is %d at %d, %d \n", getValue(in_image_buffer, i + x, j + y), i + x, j + y);
-      }
       if (getValue(in_image_buffer, i + x, j + y))
       {
         detected = 1;
@@ -99,10 +95,6 @@ int _detection(short int x, short int y,
     }
     if (detected)
       break;
-  }
-  if (x > 296 && y >= 627)
-  {
-    printf("returning detetcted %d \n",detected);
   }
   return detected;
 }
