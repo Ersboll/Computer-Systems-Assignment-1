@@ -4,7 +4,7 @@
 
 int detectCells(unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1],
                 unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1],
-                unsigned short int (*list_buffer)[2])
+                unsigned short (*list_buffer)[2])
 {
   int detection_count = 0;
   for (unsigned short i = 0; i < BMP_WIDTH; i++)

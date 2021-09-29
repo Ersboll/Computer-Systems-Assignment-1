@@ -5,10 +5,10 @@ unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH / 8 + 1];
 unsigned char binary_image_1[BMP_WIDTH][BMP_HEIGTH / 8 + 1];
 unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
-unsigned short int detected_cells[MAX_CELL_COUNT][2];
-unsigned short int buffer_list_cells[MAX_CELL_COUNT][2];
+unsigned short detected_cells[MAX_CELL_COUNT][2];
+unsigned short buffer_list_cells[MAX_CELL_COUNT][2];
 
-unsigned short int (*buffer_list_cells_buffer)[2] = buffer_list_cells;
+unsigned short (*buffer_list_cells_buffer)[2] = buffer_list_cells;
 unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_0;
 unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_1;
 unsigned char (*temp_buffer)[BMP_HEIGTH / 8 + 1] = NULL;
@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
   int i = -1;
 #endif
 
-  unsigned int detection_count = 0;
+  unsigned short detection_count = 0;
   unsigned int n = 0;
   while (erosion(in_image_buffer, out_image_buffer)) {
 #if DEBUGGING
@@ -136,10 +136,10 @@ int main(int argc, char **argv) {
 }
 
 #if PRODUCTION
-void print_results(unsigned short int (*list)[2],
-                   short int size) { //[MAX_CELL_COUNT]
+void print_results(unsigned short (*list)[2],
+                   short size) { //[MAX_CELL_COUNT]
   printf("Detected %u cells at:\n", size);
-  for (short int i = 0; i < size; i++) {
+  for (short i = 0; i < size; i++) {
     printf("%u,%u\n", list[i][0], list[i][1]);
   }
 }

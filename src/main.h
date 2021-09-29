@@ -17,6 +17,6 @@
 
 #define MAX_CELL_COUNT 500
 
-void print_results(unsigned short int (*list)[2], short int size);
+void print_results(unsigned short (*list)[2], short size);
 
 #endif
