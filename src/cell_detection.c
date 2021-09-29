@@ -1,12 +1,12 @@
 #include "cell_detection.h"
 #include "compression.h"
 
-int detectCells(unsigned char (*in_image_buffer)[BMP_HEIGTH/8],
-                unsigned char (*out_image_buffer)[BMP_HEIGTH/8],
+int detectCells(unsigned char (*in_image_buffer)[BMP_HEIGTH/8+1],
+                unsigned char (*out_image_buffer)[BMP_HEIGTH/8+1],
                 unsigned short int (*list_buffer)[2]) {
   int detection_count = 0;
-  for (short int i = 0; i < BMP_WIDTH; i++) {
-    for (short int j = 0; j < BMP_HEIGTH; j++) {
+  for (unsigned short i = 0; i < BMP_WIDTH; i++) {
+    for (unsigned short j = 0; j < BMP_HEIGTH; j++) {
       setValue(out_image_buffer, i, j, getValue(in_image_buffer, i ,j));
     }
   }

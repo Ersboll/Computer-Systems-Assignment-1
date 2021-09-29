@@ -2,7 +2,7 @@
 #define EROSION_H
 #include "cbmp.h"
 
-int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH/8],
-            unsigned char (*out_image_buffer)[BMP_HEIGTH/8]);
+int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH/8+1],
+            unsigned char (*out_image_buffer)[BMP_HEIGTH/8+1]);
 
 #endif

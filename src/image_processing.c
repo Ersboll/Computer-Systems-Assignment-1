@@ -1,8 +1,8 @@
 #include "image_processing.h"
 #include "compression.h"
 
-int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH/8],
-            unsigned char (*out_image_buffer)[BMP_HEIGTH/8])
+int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH/8 + 1],
+            unsigned char (*out_image_buffer)[BMP_HEIGTH/8 + 1])
 {
   int erosionCount = 0;
 
@@ -41,7 +41,7 @@ int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH/8],
 
 // Returns 1 if white pixel is detected in the exclusion frame else 0
 int _exclusion(short int x, short int y,
-               unsigned char (*in_image_buffer)[BMP_HEIGTH/8])
+               unsigned char (*in_image_buffer)[BMP_HEIGTH/8+1])
 {
   int exclude = 0;
   short int xmin, xmax, ymin, ymax;
@@ -70,7 +70,7 @@ int _exclusion(short int x, short int y,
 
 // Returns 1 if a white pixel is found in the detection area else 0
 int _detection(short int x, short int y,
-               unsigned char (*in_image_buffer)[BMP_HEIGTH/8])
+               unsigned char (*in_image_buffer)[BMP_HEIGTH/8+1])
 {
   int detected = 0;
 
@@ -100,7 +100,7 @@ int _detection(short int x, short int y,
 }
 
 void _whipeCell(short int x, short int y,
-                unsigned char (*out_image_buffer)[BMP_HEIGTH/8])
+                unsigned char (*out_image_buffer)[BMP_HEIGTH/8+1])
 {
   short int xmin, xmax, ymin, ymax;
   _getXandYmaxmin(x, y, &xmin, &xmax, &ymin, &ymax);

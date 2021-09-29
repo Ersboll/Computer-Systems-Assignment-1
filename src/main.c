@@ -1,18 +1,17 @@
 #include "main.h"
-
+//gcc src/*.c -o runnable && ./runnable.exe example.bmp output.bmp 
 // Main function
 unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
-unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH/8];
-unsigned char binary_image_1[BMP_WIDTH][BMP_HEIGTH/8];
+unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH / 8 + 1];
+unsigned char binary_image_1[BMP_WIDTH][BMP_HEIGTH / 8 + 1];
 unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 unsigned short int detected_cells[MAX_CELL_COUNT][2];
 unsigned short int buffer_list_cells[MAX_CELL_COUNT][2];
 
 unsigned short int (*buffer_list_cells_buffer)[2] = buffer_list_cells;
-unsigned char (*in_image_buffer)[BMP_HEIGTH/8] = binary_image_0;
-unsigned char (*out_image_buffer)[BMP_HEIGTH/8] = binary_image_1;
-unsigned char (*temp_buffer)[BMP_HEIGTH/8] = NULL;
-
+unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_0;
+unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_1;
+unsigned char (*temp_buffer)[BMP_HEIGTH / 8 + 1] = NULL;
 
 //Swaps pointers
 void pointerSwap()
@@ -75,8 +74,17 @@ int main(int argc, char **argv)
   rgb2gray(input_image, big_buffer1);
 
   binaryThreshold(big_buffer1, big_buffer2);
+
+#if DEBUGGING
+  printf("Compressing\n");
+#endif
+
   compressBinaryImage(big_buffer2, out_image_buffer);
 
+
+#if DEBUGGING
+  printf("Finished compression\n");
+#endif
   pointerSwap();
 
 #if DEBUGGING
