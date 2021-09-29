@@ -65,19 +65,8 @@ int main(int argc, char **argv) {
 #if DEBUGGING
   printf("RGB 2 gray\n");
 #endif
-  // temporary 950*950 array, only used here
-  unsigned char rgb2g[BMP_WIDTH][BMP_HEIGTH];
-  unsigned char(*big_buffer1)[BMP_HEIGTH] = rgb2g;
-  unsigned char(*big_buffer2)[BMP_HEIGTH] = rgb2g;
-  rgb2gray(input_image, big_buffer1);
 
-  binary_threshold(big_buffer1, big_buffer2);
-
-#if DEBUGGING
-  printf("Compressing\n");
-#endif
-
-  compressBinaryImage(big_buffer2, out_image_buffer);
+  convert_to_binary(out_image_buffer);
 
 #if DEBUGGING
   printf("Finished compression\n");
@@ -133,6 +122,19 @@ int main(int argc, char **argv) {
   printf("Done!\n");
 #endif
   return EXIT_SUCCESS;
+}
+
+//Used to contain the big buffer variables to a small scope, to minimize space used.
+void convert_to_binary(unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1]) {
+  
+  unsigned char rgb2g[BMP_WIDTH][BMP_HEIGTH];
+  unsigned char(*big_buffer1)[BMP_HEIGTH] = rgb2g;
+  unsigned char(*big_buffer2)[BMP_HEIGTH] = rgb2g;
+  rgb2gray(input_image, big_buffer1);
+
+  binary_threshold(big_buffer1, big_buffer2);
+
+  compressBinaryImage(big_buffer2, out_image_buffer);
 }
 
 #if PRODUCTION

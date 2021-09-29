@@ -18,5 +18,6 @@
 #define MAX_CELL_COUNT 500
 
 void print_results(unsigned short (*list)[2], short size);
+void convert_to_binary(unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1]);
 
 #endif
