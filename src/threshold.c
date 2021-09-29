@@ -24,7 +24,7 @@ void binary_threshold(unsigned char (*in_image_buffer)[BMP_HEIGTH],
 
 #if THRESHOLDING_METHOD == OTSU || THRESHOLDING_METHOD == MAXIMUM_DEVIATION
 
-void _compute_histogram(unsigned short *histogram,
+void _compute_histogram(unsigned int *histogram,
                         unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
   memset(histogram, 0, HISTOGRAM_SIZE);
 
@@ -47,22 +47,21 @@ void _compute_histogram(unsigned short *histogram,
 // output is the threshold in range [0;255]
 
 unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
-  unsigned short histogram[HISTOGRAM_SIZE];
+  unsigned int histogram[HISTOGRAM_SIZE];
   _compute_histogram(histogram, in_image_buffer);
-  unsigned char threshold;
 
-  float sum = 0.0;
-  float sum_b = 0.0;
-  unsigned short q1 = 0;
-  unsigned short q2 = 0;
-  float var_max = 0;
-  float m1, m2, var_between;
+  double sum = 0.0;
 
   // Auxilary value for computing m2
   for (unsigned short i = 0; i < HISTOGRAM_SIZE; i++) {
-    sum += i * (int)histogram[i];
+    sum += i * histogram[i];
   }
 
+  float sum_b = 0.0;
+  long q1 = 0;
+  long q2 = 0;
+  float var_max = 0;
+  unsigned char threshold = 0;
   for (unsigned short i = 0; i < HISTOGRAM_SIZE; i++) {
     q1 += histogram[i];
     if (q1 == 0)
@@ -74,10 +73,10 @@ unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
 
     // update m1 and m2
     sum_b += (float)(i * (int)histogram[i]);
-    m1 = sum_b / q1;
-    m2 = (sum - sum_b) / q2;
+    float m1 = sum_b / q1;
+    float m2 = (sum - sum_b) / q2;
 
-    var_between = (float)q1 * (float)q2 * (m1 - m2) * (m1 - m2);
+    float var_between = (float)q1 * (float)q2 * (m1 - m2) * (m1 - m2);
 
     if (var_between > var_max) {
       var_max = var_between;
