@@ -10,8 +10,8 @@ int detectCells(unsigned char (*in_image_buffer)[BMP_HEIGTH/8+1],
       setValue(out_image_buffer, i, j, getValue(in_image_buffer, i ,j));
     }
   }
-  for (short int i = 0; i < BMP_WIDTH; i++) {
-    for (short int j = 0; j < BMP_HEIGTH; j++) {
+  for (unsigned short i = 0; i < BMP_WIDTH; i++) {
+    for (unsigned short j = 0; j < BMP_HEIGTH; j++) {
       if (_exclusion(i, j, out_image_buffer)) {
         continue;
       } else if (_detection(i, j, out_image_buffer)) {

@@ -1,5 +1,4 @@
 #include "compression.h"
-#include <stdio.h>
 
 //Compress from binary image stores as chars to packes bits
 void compressBinaryImage(
@@ -13,12 +12,6 @@ void compressBinaryImage(
             if (in_image_buffer[i][j])
             {
                 out_image_buffer[i][j / 8] |= (0x01 << j%8);
-            }
-
-            if( (getValue(out_image_buffer, i, j) && !in_image_buffer[i][j])
-            || (!getValue(out_image_buffer, i, j) && in_image_buffer[i][j])
-            ) {
-                printf("%d != %d: at %d, %d \n", getValue(out_image_buffer, i, j), in_image_buffer[i][j], i, j);
             }
         }
     }

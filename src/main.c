@@ -107,6 +107,7 @@ int main(int argc, char **argv)
 
     n = detectCells(in_image_buffer, out_image_buffer,
                     buffer_list_cells_buffer);
+    printf("Cells detected");
     for (unsigned int j = 0; j < n; j++)
     {
       detected_cells[detection_count + j][0] = buffer_list_cells_buffer[j][0];
