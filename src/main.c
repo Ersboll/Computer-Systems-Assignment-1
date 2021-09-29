@@ -1,17 +1,17 @@
 #include "main.h"
-
+//gcc src/*.c -o runnable && ./runnable.exe example.bmp output.bmp 
 // Main function
 unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
-unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH];
-unsigned char binary_image_1[BMP_WIDTH][BMP_HEIGTH];
+unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH / 8 + 1];
+unsigned char binary_image_1[BMP_WIDTH][BMP_HEIGTH / 8 + 1];
 unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 unsigned short int detected_cells[MAX_CELL_COUNT][2];
 unsigned short int buffer_list_cells[MAX_CELL_COUNT][2];
 
 unsigned short int (*buffer_list_cells_buffer)[2] = buffer_list_cells;
-unsigned char (*in_image_buffer)[BMP_HEIGTH] = binary_image_0;
-unsigned char (*out_image_buffer)[BMP_HEIGTH] = binary_image_1;
-unsigned char (*temp_buffer)[BMP_HEIGTH] = NULL;
+unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_0;
+unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_1;
+unsigned char (*temp_buffer)[BMP_HEIGTH / 8 + 1] = NULL;
 
 
 //Swaps pointers
@@ -69,12 +69,24 @@ int main(int argc, char **argv)
 #if DEBUGGING
   printf("RGB 2 gray\n");
 #endif
-  rgb2gray(input_image, out_image_buffer);
+  //temporary 950*950 array, only used here
+  unsigned char rgb2g[BMP_WIDTH][BMP_HEIGTH];
+  unsigned char(*big_buffer1)[BMP_HEIGTH] = rgb2g;
+  unsigned char(*big_buffer2)[BMP_HEIGTH] = rgb2g;
+  rgb2gray(input_image, big_buffer1);
 
-  pointerSwap();
+  binary_threshold(big_buffer1, big_buffer2);
 
-  binary_threshold(in_image_buffer, out_image_buffer);
+#if DEBUGGING
+  printf("Compressing\n");
+#endif
 
+  compressBinaryImage(big_buffer2, out_image_buffer);
+
+
+#if DEBUGGING
+  printf("Finished compression\n");
+#endif
   pointerSwap();
 
 #if DEBUGGING
