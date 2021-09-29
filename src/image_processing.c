@@ -16,7 +16,7 @@ int erosion(unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1],
         setValue(out_image_buffer, i, j, 0);
       }
       else
-      { // != 0
+      { // != 
         if (i == 0 || i == BMP_WIDTH - 1 || j == 0 ||
             j == BMP_HEIGTH - 1)
         { // are we on the edge?
@@ -63,7 +63,7 @@ int _exclusion(short int x, short int y,
       break;
 
     exclude = exclude || getValue(in_image_buffer, x + xmax, y + i) ||
-              getValue(in_image_buffer, x + xmin, y + 1);
+              getValue(in_image_buffer, x + xmin, y + i);
   }
 
   return exclude;
