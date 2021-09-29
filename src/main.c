@@ -13,13 +13,14 @@ unsigned char (*in_image_buffer)[BMP_HEIGTH] = binary_image_0;
 unsigned char (*out_image_buffer)[BMP_HEIGTH] = binary_image_1;
 unsigned char (*temp_buffer)[BMP_HEIGTH] = NULL;
 
-//Swaps pointers
-void pointerSwap(unsigned char (*pointer1)[], unsigned char (*pointer2)[]) {
-  temp_buffer = pointer1;
-  pointer1 = pointer2;
-  pointer2 = temp_buffer;
-}
 
+//Swaps pointers
+void pointerSwap()
+{
+  temp_buffer = in_image_buffer;
+  in_image_buffer = out_image_buffer;
+  out_image_buffer = temp_buffer;
+}
 
 int main(int argc, char **argv)
 {
@@ -54,8 +55,7 @@ int main(int argc, char **argv)
   // argv[2] is the second command line argument (output image)
 
   // Checking that 2 arguments are passed
-  if (argc != 3)
-  {
+  if (argc != 3) {
     fprintf(stderr, "Usage: %s <output file path> <output file path>\n",
             argv[0]);
     exit(1);
@@ -71,23 +71,23 @@ int main(int argc, char **argv)
 #endif
   rgb2gray(input_image, out_image_buffer);
 
-  pointerSwap(in_image_buffer, out_image_buffer);
+  pointerSwap();
 
-  binaryThreshold(in_image_buffer, out_image_buffer);
+  binary_threshold(in_image_buffer, out_image_buffer);
 
-  pointerSwap(in_image_buffer, out_image_buffer);
+  pointerSwap();
 
 #if DEBUGGING
   int i = -1;
 #endif
+
   unsigned int detection_count = 0;
   unsigned int n = 0;
-  while (erosion(in_image_buffer, out_image_buffer))
-  {
+  while (erosion(in_image_buffer, out_image_buffer)) {
 #if DEBUGGING
     printf("erosion: %d\n", ++i);
 #endif
-    pointerSwap(in_image_buffer, out_image_buffer);
+    pointerSwap();
 
 #if DEBUGGING
     gray2rgb(in_image_buffer, output_image);
@@ -96,14 +96,13 @@ int main(int argc, char **argv)
 
     n = detectCells(in_image_buffer, out_image_buffer,
                     buffer_list_cells_buffer);
-    for (unsigned int j = 0; j < n; j++)
-    {
+    for (unsigned int j = 0; j < n; j++) {
       detected_cells[detection_count + j][0] = buffer_list_cells_buffer[j][0];
       detected_cells[detection_count + j][1] = buffer_list_cells_buffer[j][1];
     }
     memset(buffer_list_cells_buffer, 0, MAX_CELL_COUNT * 2);
     detection_count += n;
-    pointerSwap(in_image_buffer, out_image_buffer);
+    pointerSwap();
   }
 #if DEBUGGING
   printf("Finished detection:%u\n", detection_count);
