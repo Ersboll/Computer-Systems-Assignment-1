@@ -24,7 +24,9 @@ void pointerSwap()
 
 int main(int argc, char **argv)
 {
+#if DEBUGGING
   printf("We starting!");
+#endif
 
 #if TESTING
   clock_t start, end;
