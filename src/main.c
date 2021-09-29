@@ -13,6 +13,7 @@ unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_0;
 unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_1;
 unsigned char (*temp_buffer)[BMP_HEIGTH / 8 + 1] = NULL;
 
+
 //Swaps pointers
 void pointerSwap()
 {
@@ -52,8 +53,7 @@ int main(int argc, char **argv)
   // argv[2] is the second command line argument (output image)
 
   // Checking that 2 arguments are passed
-  if (argc != 3)
-  {
+  if (argc != 3) {
     fprintf(stderr, "Usage: %s <output file path> <output file path>\n",
             argv[0]);
     exit(1);
@@ -93,8 +93,7 @@ int main(int argc, char **argv)
 
   unsigned int detection_count = 0;
   unsigned int n = 0;
-  while (erosion(in_image_buffer, out_image_buffer))
-  {
+  while (erosion(in_image_buffer, out_image_buffer)) {
 #if DEBUGGING
     printf("erosion: %d\n", ++i);
 #endif
@@ -107,8 +106,7 @@ int main(int argc, char **argv)
 
     n = detectCells(in_image_buffer, out_image_buffer,
                     buffer_list_cells_buffer);
-    for (unsigned int j = 0; j < n; j++)
-    {
+    for (unsigned int j = 0; j < n; j++) {
       detected_cells[detection_count + j][0] = buffer_list_cells_buffer[j][0];
       detected_cells[detection_count + j][1] = buffer_list_cells_buffer[j][1];
     }
