@@ -13,19 +13,17 @@ unsigned char (*in_image_buffer)[BMP_HEIGTH] = binary_image_0;
 unsigned char (*out_image_buffer)[BMP_HEIGTH] = binary_image_1;
 unsigned char (*temp_buffer)[BMP_HEIGTH] = NULL;
 
-
-//Swaps pointers
-void pointerSwap()
-{
+// Swaps pointers
+void pointerSwap() {
   temp_buffer = in_image_buffer;
   in_image_buffer = out_image_buffer;
   out_image_buffer = temp_buffer;
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
+#if DEBUGGING
   printf("We starting!");
-
+#endif
 #if TESTING
   clock_t start, end;
   double cpu_time_used;
@@ -108,7 +106,11 @@ int main(int argc, char **argv)
   // gray2rgb(in_image_buffer, output_image);
 
   markCells(detected_cells, detection_count, input_image, output_image);
+
+#if PRODUCTION
   // Save image to file
+  print_results(detected_cells, detection_count);
+#endif
   write_bitmap(output_image, argv[2]);
 #if TESTING
   end = clock();
@@ -121,3 +123,13 @@ int main(int argc, char **argv)
 #endif
   return EXIT_SUCCESS;
 }
+
+#if PRODUCTION
+void print_results(unsigned short int (*list)[2],
+                   short int size) { //[MAX_CELL_COUNT]
+  printf("Detected %u cells at:\n", size);
+  for (short int i = 0; i < size; i++) {
+    printf("%u,%u\n", list[i][0], list[i][1]);
+  }
+}
+#endif
