@@ -23,25 +23,40 @@ def run():
             file_path = f"./{DIR}/{dir}/{f}"
             
             sample = {
+                "image_name": f,
                 "times": [],
-                "average": 0
+                "average_time": 0,
+                "detection_count": [],
+                "average_detection_count": 0,
             }
-            sum = 0
+
+            time_sum = 0
+            detection_count_sum = 0
 
             for n in range(SAMPLE_SIZE):
-                time = os.popen("./build/final_program example.bmp ./out.bmp").read()
+                time, detection_count = os.popen(f"./build/final_program {file_path} ./out.bmp").read().split()
                 
-                sum += float(time)
+                time_sum += float(time)
+                detection_count_sum += float(detection_count)
 
                 sample["times"].append(time)
-                times += 1
-                print(f"time: {times} of {35*SAMPLE_SIZE}", end = "\r")
+                sample["detection_count"].append(detection_count)
 
-            sample["average"] = sum / SAMPLE_SIZE
+                times += 1
+
+                print(f"time: {times} of {35*SAMPLE_SIZE} with detection count: {detection_count}", end = "\r")
+
+
+            sample["average_time"] = time_sum / SAMPLE_SIZE
+            sample["average_detection_count"] = detection_count_sum / SAMPLE_SIZE
 
             timedict[dir].append(sample)
             
     print(json.dumps(timedict, sort_keys=True, indent=4))
+
+    f = open("test.json", "w")
+    f.write(json.dumps(timedict, sort_keys=True, indent=4))
+    f.close()
 
 
 def analyse(timedict):

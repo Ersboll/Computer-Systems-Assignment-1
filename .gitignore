@@ -2,6 +2,7 @@
 final_program
 out/
 out.bmp
+*.json
 
 # Prerequisites
 *.d
