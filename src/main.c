@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
   end = clock();
 
   cpu_time_used = end - start;
-  printf("%f", cpu_time_used * 1000.0 / CLOCKS_PER_SEC);
+  printf("%f %u", cpu_time_used * 1000.0 / CLOCKS_PER_SEC, detection_count);
 #endif
 #if DEBUGGING
   printf("Done!\n");
