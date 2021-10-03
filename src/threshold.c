@@ -6,7 +6,7 @@
 void binary_threshold(unsigned char (*image_buffer)[BMP_HEIGTH]) {
 
 #if THRESHOLDING_METHOD == OTSU
-  unsigned char threshold = _otsu(in_image_buffer);
+  unsigned char threshold = _otsu(image_buffer);
 #else
   unsigned char threshold = BINARY_THRESHOLD_VALUE;
 #endif
