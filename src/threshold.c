@@ -3,8 +3,7 @@
 // Does binary thresholding on the input image, writes to the output image
 // buffer
 // The method used (either OTSU or just a constant) is defined in env.h
-void binary_threshold(unsigned char (*in_image_buffer)[BMP_HEIGTH],
-                      unsigned char (*out_image_buffer)[BMP_HEIGTH]) {
+void binary_threshold(unsigned char (*image_buffer)[BMP_HEIGTH]) {
 
 #if THRESHOLDING_METHOD == OTSU
   unsigned char threshold = _otsu(in_image_buffer);
@@ -18,7 +17,7 @@ void binary_threshold(unsigned char (*in_image_buffer)[BMP_HEIGTH],
 
   for (int i = 0; i < BMP_WIDTH; i++) {
     for (int j = 0; j < BMP_HEIGTH; j++) {
-      out_image_buffer[i][j] = in_image_buffer[i][j] > threshold ? 255 : 0;
+      image_buffer[i][j] = image_buffer[i][j] > threshold ? 255 : 0;
     }
   }
 }
@@ -29,7 +28,7 @@ void binary_threshold(unsigned char (*in_image_buffer)[BMP_HEIGTH],
 // Write the histogram in the histogram array
 // Takes also the image buffer to create the histogram from
 void _compute_histogram(unsigned int *histogram,
-                        unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
+                        unsigned char (*image_buffer)[BMP_HEIGTH]) {
   memset(histogram, 0, HISTOGRAM_SIZE);
 
 #if DEBUGGING
@@ -41,7 +40,7 @@ void _compute_histogram(unsigned int *histogram,
 
   for (unsigned short i = 0; i < BMP_WIDTH; i++) {
     for (unsigned short j = 0; j < BMP_HEIGTH; j++) {
-      histogram[in_image_buffer[i][j]]++;
+      histogram[image_buffer[i][j]]++;
     }
   }
 }
@@ -56,10 +55,10 @@ void _compute_histogram(unsigned int *histogram,
 // output is the threshold in range [0;255]
 // Based on the java implementation:
 // http://www.labbookpages.co.uk/software/imgProc/otsuThreshold.html
-unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
+unsigned char _otsu(unsigned char (*image_buffer)[BMP_HEIGTH]) {
   unsigned int histogram[HISTOGRAM_SIZE];
   // bzero(histogram, HISTOGRAM_SIZE);
-  _compute_histogram(histogram, in_image_buffer);
+  _compute_histogram(histogram, image_buffer);
 
   double sum = 0.0;
 

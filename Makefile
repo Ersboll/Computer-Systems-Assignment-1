@@ -36,7 +36,7 @@ $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-.PHONY: clean run gif
+.PHONY: clean run
 clean:
 	rm -r $(BUILD_DIR)
 run:
