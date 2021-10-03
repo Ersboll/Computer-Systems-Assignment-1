@@ -29,6 +29,10 @@ void _compute_histogram(unsigned int *histogram,
 #if DEBUGGING
   printf("creating histogram\n");
 #endif
+  for (unsigned short i = 0; i < HISTOGRAM_SIZE; i++) {
+    histogram[i] = 0;
+  }
+
   for (unsigned short i = 0; i < BMP_WIDTH; i++) {
     for (unsigned short j = 0; j < BMP_HEIGTH; j++) {
       histogram[in_image_buffer[i][j]]++;
@@ -46,6 +50,7 @@ void _compute_histogram(unsigned int *histogram,
 
 unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
   unsigned int histogram[HISTOGRAM_SIZE];
+  // bzero(histogram, HISTOGRAM_SIZE);
   _compute_histogram(histogram, in_image_buffer);
 
   double sum = 0.0;
