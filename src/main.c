@@ -5,10 +5,7 @@ unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
 unsigned char binary_image_0[BMP_WIDTH][BMP_HEIGTH / 8 + 1];
 unsigned char binary_image_1[BMP_WIDTH][BMP_HEIGTH / 8 + 1];
 unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
-unsigned short detected_cells[MAX_CELL_COUNT][2];
-unsigned short buffer_list_cells[MAX_CELL_COUNT][2];
-
-unsigned short (*buffer_list_cells_buffer)[2] = buffer_list_cells;
+// unsigned short detected_cells[MAX_CELL_COUNT][2];
 unsigned char (*in_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_0;
 unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1] = binary_image_1;
 unsigned char (*temp_buffer)[BMP_HEIGTH / 8 + 1] = NULL;
@@ -74,43 +71,41 @@ int main(int argc, char **argv) {
   pointerSwap();
 
 #if DEBUGGING
-  int i = -1;
+  int i = 0;
 #endif
 
-  unsigned short detection_count = 0;
-  unsigned int n = 0;
+  cell_list_t *detected_cells = initialize_cell_list();
+  if (!detected_cells) {
+    printf("Error allocating memory for detected cells list\n");
+    exit(EXIT_FAILURE);
+  }
+
   while (erosion(in_image_buffer, out_image_buffer)) {
-#if DEBUGGING
-    printf("erosion: %d\n", ++i);
-#endif
     pointerSwap();
-
 #if DEBUGGING
+    printf("erosion: %d\n", i++);
     gray2rgb(in_image_buffer, output_image);
     write_bitmap(output_image, file_names[i]);
 #endif
-
-    n = detectCells(in_image_buffer, out_image_buffer,
-                    buffer_list_cells_buffer);
-    for (unsigned int j = 0; j < n; j++) {
-      detected_cells[detection_count + j][0] = buffer_list_cells_buffer[j][0];
-      detected_cells[detection_count + j][1] = buffer_list_cells_buffer[j][1];
+    int res = detectCells(detected_cells, in_image_buffer, out_image_buffer);
+    if (!res) {
+      printf("Error adding cells to detected cells list\n");
+      exit(EXIT_FAILURE);
     }
-    memset(buffer_list_cells_buffer, 0, MAX_CELL_COUNT * 2);
-    detection_count += n;
     pointerSwap();
   }
-#if DEBUGGING
-  printf("Finished detection:%u\n", detection_count);
-#endif
-  // gray2rgb(in_image_buffer, output_image);
 
-  markCells(detected_cells, detection_count, input_image, output_image);
+#if DEBUGGING
+  printf("Finished detection:%u\n", detected_cells->count);
+#endif
+
+  markCells(detected_cells, input_image, output_image);
 
 #if PRODUCTION
   // Save image to file
-  print_results(detected_cells, detection_count);
+  print_results(detected_cells);
 #endif
+  destroy_cell_list(detected_cells);
   write_bitmap(output_image, argv[2]);
 #if TESTING
   end = clock();
@@ -124,9 +119,10 @@ int main(int argc, char **argv) {
   return EXIT_SUCCESS;
 }
 
-//Used to contain the big buffer variables to a small scope, to minimize space used.
+// Used to contain the big buffer variables to a small scope, to minimize space
+// used.
 void convert_to_binary(unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1]) {
-  
+
   unsigned char rgb2g[BMP_WIDTH][BMP_HEIGTH];
   unsigned char(*big_buffer1)[BMP_HEIGTH] = rgb2g;
   unsigned char(*big_buffer2)[BMP_HEIGTH] = rgb2g;
@@ -138,11 +134,10 @@ void convert_to_binary(unsigned char (*out_image_buffer)[BMP_HEIGTH / 8 + 1]) {
 }
 
 #if PRODUCTION
-void print_results(unsigned short (*list)[2],
-                   short size) { //[MAX_CELL_COUNT]
-  printf("Detected %u cells at:\n", size);
-  for (short i = 0; i < size; i++) {
-    printf("%u,%u\n", list[i][0], list[i][1]);
+void print_results(cell_list_t *cell_list) { //[MAX_CELL_COUNT]
+  printf("Detected %u cells at:\n", cell_list->count);
+  for (short i = 0; i < cell_list->count; i++) {
+    printf("%u,%u\n", cell_list->list[i][0], cell_list->list[i][1]);
   }
 }
 #endif

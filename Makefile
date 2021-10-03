@@ -1,4 +1,4 @@
-# Thanks to Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
+# Inspiration taken from (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
 TARGET_EXEC := final_program
 TARGET_RUN_PARAMS := example.bmp ./out.bmp
 

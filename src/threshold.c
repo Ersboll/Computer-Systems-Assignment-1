@@ -1,5 +1,8 @@
 #include "threshold.h"
 
+// Does binary thresholding on the input image, writes to the output image
+// buffer
+// The method used (either OTSU or just a constant) is defined in env.h
 void binary_threshold(unsigned char (*in_image_buffer)[BMP_HEIGTH],
                       unsigned char (*out_image_buffer)[BMP_HEIGTH]) {
 
@@ -22,6 +25,9 @@ void binary_threshold(unsigned char (*in_image_buffer)[BMP_HEIGTH],
 
 #if THRESHOLDING_METHOD == OTSU
 
+// Compute the histogram used in the otsu method
+// Write the histogram in the histogram array
+// Takes also the image buffer to create the histogram from
 void _compute_histogram(unsigned int *histogram,
                         unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
   memset(histogram, 0, HISTOGRAM_SIZE);
@@ -44,10 +50,12 @@ void _compute_histogram(unsigned int *histogram,
        // MAXIMUM_DEVIATION
 
 #if THRESHOLDING_METHOD == OTSU
+
 // Otsu's method
 // Input argument is a 256x256 grayscale image
 // output is the threshold in range [0;255]
-
+// Based on the java implementation:
+// http://www.labbookpages.co.uk/software/imgProc/otsuThreshold.html
 unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
   unsigned int histogram[HISTOGRAM_SIZE];
   // bzero(histogram, HISTOGRAM_SIZE);
@@ -89,4 +97,5 @@ unsigned char _otsu(unsigned char (*in_image_buffer)[BMP_HEIGTH]) {
 
   return threshold;
 }
+
 #endif // THRESHOLDING_METHOD == OTSU

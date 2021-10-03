@@ -3,7 +3,7 @@
 #define ENV_H
 #define DEBUGGING 0
 #define TESTING 0
-#define PRODUCTION 1
+#define PRODUCTION 0
 
 #define BINARY_THRESHOLD 0
 #define OTSU 1

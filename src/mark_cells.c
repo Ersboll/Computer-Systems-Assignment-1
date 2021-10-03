@@ -1,7 +1,7 @@
 #include "mark_cells.h"
 
 void markCells(
-    unsigned short (*detected_cells)[2], unsigned short number_of_cells,
+    cell_list_t *cell_list,
     unsigned char input_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS],
     unsigned char output_image[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS]) {
 
@@ -15,9 +15,9 @@ void markCells(
     }
   }
 
-  for (unsigned short i = 0; i < number_of_cells; i++) {
-    x = detected_cells[i][0];
-    y = detected_cells[i][1];
+  for (unsigned short i = 0; i < cell_list->count; i++) {
+    x = cell_list->list[i][0];
+    y = cell_list->list[i][1];
     _getXandYmaxmin(x, y, &xmin, &xmax, &ymin, &ymax);
 
     for (short a = xmin; a <= xmax; a++) {
