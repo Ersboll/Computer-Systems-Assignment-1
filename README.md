@@ -5,6 +5,6 @@
     - `DEBUGGING 0`
     - `TESTING 1`
     - `PRODUCTION 0`
-2. Choose algorithms (binart threshould or OTSU) to use by the one you want to use to 1 and the other to 0
+2. Change `THRESHOLDING_METHOD` to the algorithm (`BINARY_THRESHOLD` or `OTSU`) you want to test
 3. Run `make`
 4. Run the test `python3 test_runner.py`
