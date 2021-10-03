@@ -1,7 +1,7 @@
 # Computer-Systems-Assignment-1
 
 ## Running the test
-1. In `./src/main.h` change the following flags to
+1. In `./src/env.h` change the following flags to
     - `DEBUGGING 0`
     - `TESTING 1`
     - `PRODUCTION 0`
