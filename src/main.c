@@ -110,8 +110,7 @@ int main(int argc, char **argv) {
   end = clock();
 
   cpu_time_used = end - start;
-  printf("%f %u\n", cpu_time_used * 1000.0 / CLOCKS_PER_SEC,
-         detected_cells->count);
+  printf("%f %u\n", cpu_time_used * 1000.0 / CLOCKS_PER_SEC, detected_cells->count);
 #endif
 
   destroy_cell_list(detected_cells);
