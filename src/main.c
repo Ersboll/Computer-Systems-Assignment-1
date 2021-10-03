@@ -105,14 +105,16 @@ int main(int argc, char **argv) {
   // Save image to file
   print_results(detected_cells);
 #endif
-  destroy_cell_list(detected_cells);
   write_bitmap(output_image, argv[2]);
 #if TESTING
   end = clock();
 
   cpu_time_used = end - start;
-  printf("%f %u", cpu_time_used * 1000.0 / CLOCKS_PER_SEC, detection_count);
+  printf("%f %u\n", cpu_time_used * 1000.0 / CLOCKS_PER_SEC,
+         detected_cells->count);
 #endif
+
+  destroy_cell_list(detected_cells);
 #if DEBUGGING
   printf("Done!\n");
 #endif
