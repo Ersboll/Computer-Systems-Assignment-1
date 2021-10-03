@@ -85,9 +85,10 @@ int main(int argc, char** argv) {
   while (erosion(in_image_buffer, out_image_buffer)) {
     pointerSwap();
 #if DEBUGGING
+    unsigned char color_image2[BMP_WIDTH][BMP_HEIGTH][BMP_CHANNELS];
     printf("erosion: %d\n", i++);
-    gray2rgb(in_image_buffer, color_image);
-    write_bitmap(color_image, file_names[i]);
+    gray2rgb(in_image_buffer, color_image2);
+    write_bitmap(color_image2, file_names[i]);
 #endif
     int res = detectCells(detected_cells, in_image_buffer, out_image_buffer);
     if (!res) {
